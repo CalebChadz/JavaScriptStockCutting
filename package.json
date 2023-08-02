@@ -1,0 +1,11 @@
+{
+  "name": "javastockcutting",
+  "version": "1.0.0",
+  "description": "Solves stock cutting problem",
+  "main": "sketch.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "caleb chadderton",
+  "license": "ISC"
+}
