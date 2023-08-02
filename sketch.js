@@ -53,7 +53,9 @@ class Solution {
 
     drawSolution(scale){
       solution_width = (this.given_width * scale) + 1;
+      console.log("Width: " + solution_width)
       solution_height = (this.length * scale) + 1;
+      console.log("Height: " + solution_height)
       background(0);
       for (let r = 0; r < this.rectangle_list.length; r++){
         const rObject = this.rectangle_list[r];
@@ -61,6 +63,7 @@ class Solution {
         let rWidth = (rObject.width * scale);
         let rX = (rObject.x * scale);
         let rY = (rObject.y * scale);
+        console.log("rectWidth: " + rWidth + "\nrHeight: " + rHeight + "\nrX: " + rX + "\nrY: " + rY)
         // check to see if this rectabgle has been flipped from original orientation to change color before drawing.
         if (rObject.rotated){
           //Blue
