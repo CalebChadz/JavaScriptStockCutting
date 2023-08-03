@@ -172,7 +172,8 @@ return solution_matrix
 // funciton that decodes the list representation of boxes to a matrix representation and gives
 // the rectangles coordinates on a plane.
 function calculateRectanglePositions(rectangle_array, given_width){
-  solution_matrix = new Array(given_width).fill(0);
+  solution_matrix = []; 
+  solution_matrix.push (new Array(given_width).fill(0));
   xPrime = 0;
   yPrime = 0;
   for (let rectangle in rectangle_array){
