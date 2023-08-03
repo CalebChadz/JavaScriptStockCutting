@@ -134,28 +134,25 @@ function checkRectangleCoordinates(Rectangle, given_width, solution_matrix){
   while (pointer_y < Rectangle.height){
     //making sure that the current height of 2d matrix has enough height for the current rectangle being added.
     if (solution_matrix.length <= start_y + pointer_y){
-      solution_matrix.push(new Array(given_width).fill(0));
+      solution_matrix.push(new Array(given_width).fill('0'));
     }
     pointer_x = 0;
     while (pointer_x < Rectangle.width){
       // if the current pointers x,y are already populated in matrix, increment x value's start.
-      if(solution_matrix[start_y + pointer_y][start_x + pointer_x] != 0){
+      if(!(solution_matrix[start_y + pointer_y][start_x + pointer_x] === '0')){
         start_x += 1;
         pointer_x = 0;
         pointer_y = 0;
+        //if the new start plus current rectabgle width exceeds max width, increment start y.
+        if (start_x + Rectangle.width > given_width) {
+          start_x = 0;
+          start_y += 1;
+          pointer_x = 0;
+          pointer_y = 0;
+        }
       }
       else {
         pointer_x += 1;
-      }
-      //if the new start plus current rectabgle width exceeds max width, increment start y.
-      if (start_x + Rectangle.width > given_width) {
-        start_x = 0;
-        start_y += 1;
-        pointer_x = 0;
-        pointer_y = 0;
-        if(solution_matrix.length <= start_y + pointer_y){
-          solution_matrix.push(new Array(given_width).fill(0));
-        }
       }
     }
     pointer_y += 1;
@@ -163,24 +160,25 @@ function checkRectangleCoordinates(Rectangle, given_width, solution_matrix){
   // now we have a free space to draw the rect
   Rectangle.setX(start_x);
   Rectangle.setY(start_y);
-  // fill in this area of our matrix
-  for (let x = start_x; x < Rectangle.width; x++){
-    for (let y = start_y; y < Rectangle.height; y++){
+  // fill in this area of our matrix, make sure to calculate correct (spent days realising this loop was big issue.)
+  for (let y = start_y; y < Rectangle.height + start_y; y++){
+    for (let x = start_x; x < Rectangle.width + start_x; x++){
       solution_matrix[y][x] = Rectangle.id;
     }
   }
+  //console.log(solution_matrix);
 return solution_matrix
 }
 
 // funciton that decodes the list representation of boxes to a matrix representation and gives
 // the rectangles coordinates on a plane.
 function calculateRectanglePositions(rectangle_array, given_width){
-  solution_matrix = []; 
-  solution_matrix.push (new Array(given_width).fill(0));
-  start_x = 0;
-  start_y = 0;
+  let solution_matrix = []; 
+  solution_matrix.push(new Array(given_width).fill('0'));
+
   for (let rectangle in rectangle_array){
     solution_matrix = checkRectangleCoordinates(rectangle_array[rectangle], given_width, solution_matrix);
+    console.log(solution_matrix);
   }
   // value is the number of 0's in the matrix so we can diffrenciate between solutions of the same height
   value = getSolutionValue(solution_matrix, given_width);
