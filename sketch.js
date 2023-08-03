@@ -12,10 +12,10 @@ function preload() {
 }
 
 class Rectangle {
-  constructor(id, width, height, xposition, yposition){
+  constructor(id, width, height, pointer_xition, pointer_yition){
     this.id = id;
-    this.x = xposition;
-    this.y = yposition;
+    this.x = pointer_xition;
+    this.y = pointer_yition;
     this.height = height;
     this.width = width;
     this.rotated = false;
@@ -124,48 +124,51 @@ function getSolutionValue(solution_matrix, given_width){
 }
 
 function checkRectangleCoordinates(Rectangle, given_width, solution_matrix){
-  xPrime = 0;
-  yPrime = 0;
-  rectXPos = 0;
-  rectYPos = 0;
-  yPos = 0;
+  // create a reference for the start coordinates for the current rectangle (start_*) and for the current position being compared (pointer_*)
+  let start_x = 0;
+  let start_y = 0;
+  let pointer_x = 0;
+  let pointer_y = 0;
 
-  while (yPos < Rectangle.height){
-    if (solution_matrix.length <= yPrime + yPos){
+  //while the current height pointer is less that total rectangle height
+  while (pointer_y < Rectangle.height){
+    //making sure that the current height of 2d matrix has enough height for the current rectangle being added.
+    if (solution_matrix.length <= start_y + pointer_y){
       solution_matrix.push(new Array(given_width).fill(0));
     }
-    xPos = 0;
-    while (xPos < Rectangle.width){
-      if(solution_matrix[yPrime + yPos][xPrime + xPos] != 0){
-        xPrime += 1;
-        xPos = 0;
-        yPos = 0;
+    pointer_x = 0;
+    while (pointer_x < Rectangle.width){
+      // if the current pointers x,y are already populated in matrix, increment x value's start.
+      if(solution_matrix[start_y + pointer_y][start_x + pointer_x] != 0){
+        start_x += 1;
+        pointer_x = 0;
+        pointer_y = 0;
       }
       else {
-        xPos += 1;
+        pointer_x += 1;
       }
-      if (xPrime + Rectangle.width > given_width) {
-        xPrime = 0;
-        yPrime += 1;
-        xPos = 0;
-        yPos = 0;
-        if(solution_matrix.length <= yPrime + yPos){
+      //if the new start plus current rectabgle width exceeds max width, increment start y.
+      if (start_x + Rectangle.width > given_width) {
+        start_x = 0;
+        start_y += 1;
+        pointer_x = 0;
+        pointer_y = 0;
+        if(solution_matrix.length <= start_y + pointer_y){
           solution_matrix.push(new Array(given_width).fill(0));
         }
       }
     }
-    yPos += 1;
+    pointer_y += 1;
   }
   // now we have a free space to draw the rect
-  Rectangle.setX(xPrime);
-  Rectangle.setY(yPrime);
+  Rectangle.setX(start_x);
+  Rectangle.setY(start_y);
   // fill in this area of our matrix
-for (let x = 0; x < Rectangle.width; x++){
-  for (let y = 0; y < Rectangle.height; y++){
-    solution_matrix[Rectangle.y][Rectangle.x] = Rectangle.id;
+  for (let x = start_x; x < Rectangle.width; x++){
+    for (let y = start_y; y < Rectangle.height; y++){
+      solution_matrix[y][x] = Rectangle.id;
+    }
   }
-}
-
 return solution_matrix
 }
 
@@ -174,8 +177,8 @@ return solution_matrix
 function calculateRectanglePositions(rectangle_array, given_width){
   solution_matrix = []; 
   solution_matrix.push (new Array(given_width).fill(0));
-  xPrime = 0;
-  yPrime = 0;
+  start_x = 0;
+  start_y = 0;
   for (let rectangle in rectangle_array){
     solution_matrix = checkRectangleCoordinates(rectangle_array[rectangle], given_width, solution_matrix);
   }
