@@ -83,7 +83,7 @@ function ParseRectangles() {
   for(let r = 0; r < table.getRowCount(); r++){
     //Pull the next row of rectangle data and create a new rectangle object that gets added to out Rectangle Object Array.
     row = table.getRow(r);
-    let rect = new Rectangle(row.get('id'), row.get('width'), row.get('height'),0,0)
+    let rect = new Rectangle(row.get('id'), Number(row.get('width')), Number(row.get('height'),0,0))
     rect.print();
     rectangleArray.push(rect);
   }
@@ -161,9 +161,9 @@ function checkRectangleCoordinates(Rectangle, given_width, solution_matrix){
   Rectangle.setX(start_x);
   Rectangle.setY(start_y);
   // fill in this area of our matrix, make sure to calculate correct (spent days realising this loop was big issue.)
-  for (let y = start_y; y < Rectangle.height + start_y; y++){
-    for (let x = start_x; x < Rectangle.width + start_x; x++){
-      solution_matrix[y][x] = Rectangle.id;
+  for (let y = 0; y < Rectangle.height; y++){
+    for (let x = 0; x < Rectangle.width; x++){
+      solution_matrix[y + Rectangle.y][x + Rectangle.x] = Rectangle.id;
     }
   }
   //console.log(solution_matrix);
