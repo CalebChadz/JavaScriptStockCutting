@@ -54,9 +54,8 @@ class Solution {
     drawSolution(scale){
       solution_width = (this.given_width * scale) + 1;
       console.log("Width: " + solution_width)
-      solution_height = (this.length * scale) + 1;
+      solution_height = (this.rectangle_list.length * scale) + 1;
       console.log("Height: " + solution_height)
-      background(0);
       for (let r = 0; r < this.rectangle_list.length; r++){
         const rObject = this.rectangle_list[r];
         let rHeight = (rObject.height * scale);
@@ -181,15 +180,16 @@ function calculateRectanglePositions(rectangle_array, given_width){
   }
   // value is the number of 0's in the matrix so we can diffrenciate between solutions of the same height
   value = getSolutionValue(solution_matrix, given_width);
-  return value, solution_matrix.length, solution_matrix, rectangle_array;
+  return value, solution_matrix.length, solution_matrix;
 }
 
 function setup() {
   // parse the rectangle csv
   ParseRectangles();
+  rectMode(CORNER);
   // generate the default solution
   let solution = new Solution(rectangleArray, 40);
-  createCanvas(400, 400);
+  createCanvas(400, 1000);
   background(0);
   fill(255);
   console.log("Rect Array Length: " + rectangleArray.length)
